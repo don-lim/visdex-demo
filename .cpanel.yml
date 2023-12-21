@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-       - export DEPLOYPATH=/home/visdexco/public_html/demo-visdex-io-python-app
+       - export DEPLOYPATH=/home/visdexco/demo-visdex-io-python-app
        - /bin/cp -R * $DEPLOYPATH
