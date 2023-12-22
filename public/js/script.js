@@ -7,6 +7,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchResults = document.querySelector("#search-results");
     const loadingElement = document.querySelector("#loading");
 
+    // Get the drop zone element
+    const dropzone = document.querySelector("#dropzone");
+
+    // Add event listeners for drag and drop events
+    dropzone.addEventListener("dragover", function (event) {
+        event.preventDefault();
+        dropzone.classList.add("dragging");
+    });
+
+    dropzone.addEventListener("dragleave", function () {
+        dropzone.classList.remove("dragging");
+    });
+
+    dropzone.addEventListener("drop", function (event) {
+        event.preventDefault();
+        dropzone.classList.remove("dragging");
+
+        // Get the dropped files
+        const files = event.dataTransfer.files;
+
+        // If a file was dropped, trigger the file input's change event
+        if (files.length) {
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event("change"));
+        }
+    });
+
+    dropzone.addEventListener("click", function () {
+        fileInput.click();
+    });
+
     // Function to display search results
 /*    function displaySearchResults(results) {
         // display the search results here

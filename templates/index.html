@@ -119,6 +119,25 @@
             padding: 0; /* Remove padding */
         }        
 
+        .dropzone {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #999;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 15px auto; /* Center the dropzone horizontally */
+            cursor: pointer;
+            color: #999;
+        }
+
+        .dropzone.dragging {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+
     </style>
 </head>
 <body>
@@ -127,8 +146,9 @@
     <h2>Upload an Image</h2>
     <br><br><br>
     <form action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="dropzone" id="dropzone">Drag and drop a file here or click</div>
         <input type="file" name="image" accept="image/*" required id="file-input">
-        <label for="file-input" class="file-label">Choose File</label>
+        <!--label for="file-input" class="file-label">Choose File</label-->
         <!-- Display uploaded image here -->
         <div id="upload-results-title" style="display:none">
             <h2>Uploaded Image</h2>
@@ -169,3 +189,4 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+
