@@ -152,57 +152,62 @@ function displaySearchResults(results, image_base64) {
     fileInput.addEventListener("change", function () {
         const file = fileInput.files[0];
         if (file) {
-            // Clear previous content
-            uploadResults.innerHTML = "";
-            uploadResultsTitle.style.display = "";
+            // Check if the file is an image and its size is less than 5MB
+            if (file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024 && file.size > 0) {
+                // Clear previous content
+                uploadResults.innerHTML = "";
+                uploadResultsTitle.style.display = "";
 
-            // Reset search results
-            searchResults.innerHTML = "";
+                // Reset search results
+                searchResults.innerHTML = "";
 
-            const reader = new FileReader();
+                const reader = new FileReader();
 
-            reader.onload = function (event) {
-                // Create a new <div> container for the image and apply centering CSS
-                const containerDiv = document.createElement("div");
-                containerDiv.style.textAlign = "center"; // Center align the contents
+                reader.onload = function (event) {
+                    // Create a new <div> container for the image and apply centering CSS
+                    const containerDiv = document.createElement("div");
+                    containerDiv.style.textAlign = "center"; // Center align the contents
 
-                // Create a new <img> element with the data URL as the source
-                const uploadedImage = document.createElement("img");
-                uploadedImage.src = event.target.result; // Data URL
-                uploadedImage.alt = "Uploaded Image";
+                    // Create a new <img> element with the data URL as the source
+                    const uploadedImage = document.createElement("img");
+                    uploadedImage.src = event.target.result; // Data URL
+                    uploadedImage.alt = "Uploaded Image";
 
-                // Set the image width to 200 pixels
-                uploadedImage.width = 200;
+                    // Set the image width to 200 pixels
+                    uploadedImage.width = 200;
 
-                // Append the <img> element to the container <div>
-                containerDiv.appendChild(uploadedImage);
+                    // Append the <img> element to the container <div>
+                    containerDiv.appendChild(uploadedImage);
 
-                // Append the container <div> to the upload results section
-                uploadResults.appendChild(containerDiv);
+                    // Append the container <div> to the upload results section
+                    uploadResults.appendChild(containerDiv);
 
-                // Send a POST request to the server to upload the file
-                const formData = new FormData();
-                formData.append("image", file);
+                    // Send a POST request to the server to upload the file
+                    const formData = new FormData();
+                    formData.append("image", file);
 
-                fetch("/upload", {
-                    method: "POST",
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            // Handle any server response data as needed
-                        } else {
-                            console.error(data.message);
-                        }
+                    fetch("/upload", {
+                        method: "POST",
+                        body: formData,
                     })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-            };
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                // Handle any server response data as needed
+                            } else {
+                                console.error(data.message);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                };
 
-            // Read the file as a data URL
-            reader.readAsDataURL(file);
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            } else {
+                alert("Please upload an image file less than 5MB and bigger than 0 byte.");
+            }
         }
     });
 });
